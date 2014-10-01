@@ -1,7 +1,13 @@
 #!/bin/sh
 
-DATADIR=/home/hikaru/lakeshore/data
+CURRDIR=`pwd`
+CMD=${CURRDIR}/lakeshore.py
 FILENAME=`date '+%Y-%m-%d_%H%M%S'`
-COMMAND=/home/hikaru/lakeshore/lakeshore.py
-ln -sf ${FILENAME}.dat ${DATADIR}/lastest
-${COMMAND} | tee ${DATADIR}/${FILENAME}.dat
+
+if [ ! -d "${CURRDIR}/data" ]; then
+    mkdir data
+    echo 'Make data/'
+fi
+
+ln -sf ${FILENAME}.dat ${CURRDIR}/data/lastest
+python ${CMD} | tee ${CURRDIR}/data/${FILENAME}.dat
