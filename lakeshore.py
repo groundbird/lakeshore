@@ -59,7 +59,6 @@ if __name__ == '__main__':
             ut = int(time.time())
             t  = time.strftime("%Y-%m-%d-%H:%M:%S")
             d  = l.get_temps()
-            # print"%s  %d" % (t, ut)
             sys.stdout.write('%s  ' % t)
             sys.stdout.write('%s' % ut)
             print '  %.2f'*8 % tuple([float(x) for x in d.split(',')])
