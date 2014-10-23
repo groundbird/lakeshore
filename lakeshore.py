@@ -26,29 +26,24 @@ class LakeShore(object):
                                  stopbits=serial.STOPBITS_ONE)
         time.sleep(1)
         if self.ser == None: raise LakeShoreError("open error")
-
     def __del__(self):
         self.ser.close()
         del self
-
     def write(self, command):
         self.ser.write(command)
-
     def read(self):
         return self.ser.readline()
-
     def readclear(self):
         while len(self.ser.readline()) != 0: pass
-
     def get_temps(self):
         self.readclear()
         self.write("KRDG?0\r\n")
         time.sleep(1)
-        return self.read()
+        return [float(x) for x in self.read().split(',')]
 
 if __name__ == '__main__':
     # l = LakeShore('/dev/serial/by-path/pci-0000\:00\:1d.2-usb-0\:1\:1.0-port0')
-    l = LakeShore('/dev/ttyUSB0')
+    ls = LakeShore('/dev/ttyUSB0')
     print '#'
     print '# LakeShore 218 Temperature Monitor'
     print '# Date: %s' % time.strftime("%Y-%m-%d %H:%M:%S")
@@ -56,11 +51,10 @@ if __name__ == '__main__':
     print '# UTC+9  Unixtime  ch 0  ch 1  ch 2  ch 3  ch 4  ch 5  ch 6  ch 7'
     while True:
         try:
-            ut = int(time.time())
-            t  = time.strftime("%Y-%m-%d-%H:%M:%S")
-            d  = l.get_temps()
-            sys.stdout.write('%s  ' % t)
-            sys.stdout.write('%s' % ut)
-            print '  %.2f'*8 % tuple([float(x) for x in d.split(',')])
+            ts   = int(time.time())
+            t    = time.strftime("%Y-%m-%d-%H:%M:%S")
+            temp = ls.get_temps()
+            data = [t, ts] + temp
+            print '%s  '*10 % tuple(data)
             sys.stdout.flush()
         except KeyboardInterrupt: break
