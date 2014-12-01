@@ -11,3 +11,4 @@ fi
 
 ln -sf ${FILENAME}.dat ${CURRDIR}/data/lastest
 python ${CMD} | tee ${CURRDIR}/data/${FILENAME}.dat
+return ${PIPESTATUS[0]}
