@@ -38,13 +38,13 @@ class LakeShore(object):
         return [float(x) for x in self.read().split(',')]
 
 if __name__ == '__main__':
-    ls = LakeShore('/dev/ttyUSB0')
+    # ls = LakeShore('/dev/ttyUSB0')
+    ls = LakeShore('/dev/serial/by-id/usb-FTDI_USB_HS_SERIAL_CONVERTER_FTB4XLUV-if00-port0')
     print '#'
     print '# LakeShore 218: Temperature Monitor'
     print '# Date: %s' % time.strftime("%Y-%m-%d %H:%M:%S")
     print '#'
     print '# UTC+9  Timestamp  ch. 0  ch. 1  ch. 2  ch. 3  ch. 4  ch. 5  ch. 6  ch. 7'
-    print '#'
     while True:
         try:
             ts   = int(time.time())
